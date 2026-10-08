@@ -3,6 +3,8 @@ package startup
 import (
 	"fmt"
 	"os"
+
+	"github.com/clint456/north-sdk-go/pkg/interfaces"
 )
 
 func Bootstrap(serviceKey string, serviceVersion string, driver interfaces.ProtocolDriver) {

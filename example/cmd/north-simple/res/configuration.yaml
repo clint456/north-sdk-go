@@ -1,0 +1,21 @@
+Writable:
+  LogLevel: INFO
+  Reading:
+    ReadingUnits: true
+Service:
+  Host: "localhost"
+  Port: 59880 # North services are assigned the 598xx range
+  StartupMsg: north simple started
+
+# Like device-sdk-go, the service depends on core-metadata for north channel and
+# north profile persistence. This entry is mandatory.
+Clients:
+  core-metadata:
+    Protocol: http
+    Host: localhost
+    Port: 59881
+    UseMessageBus: false
+
+North:
+  # Size of the asynchronous upstream event channel.
+  AsyncEventChanBufferSize: 64

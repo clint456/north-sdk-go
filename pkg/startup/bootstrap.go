@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/clint456/north-sdk-go/pkg/interfaces"
+	"github.com/clint456/north-sdk-go/pkg/service"
 )
 
 func Bootstrap(serviceKey string, serviceVersion string, driver interfaces.ProtocolDriver) {
@@ -16,7 +17,11 @@ func Bootstrap(serviceKey string, serviceVersion string, driver interfaces.Proto
 
 	err = northService.Run()
 	if err != nil {
-		northService.LoggingClient().Errorf("North Service %s", err.Error())
+		if lc := northService.LoggingClient(); lc != nil {
+			lc.Errorf("North Service %s", err.Error())
+		} else {
+			_, _ = fmt.Fprint(os.Stderr, err.Error())
+		}
 		os.Exit(-1)
 	}
 

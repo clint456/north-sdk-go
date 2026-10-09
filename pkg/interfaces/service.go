@@ -2,6 +2,7 @@ package interfaces
 
 import (
 	sdkModels "github.com/clint456/north-sdk-go/pkg/models"
+	"github.com/edgexfoundry/go-mod-core-contracts/v4/clients/logger"
 	"github.com/edgexfoundry/go-mod-core-contracts/v4/models"
 )
 
@@ -35,7 +36,22 @@ type NorthServiceSDK interface {
 	// ========= 核心：平台下行命令（指令入） =========
 	RegisterCommandHandler(northName string, handler func(cmd models.NorthCommand) (sdkModels.CommandResult, error)) error
 	UnregisterCommandHandler(northName string) error
+	// DispatchCommand routes an inbound platform command to the handler registered
+	// for the given north channel. It is the entry point used by an inbound
+	// transport (message bus / REST) to deliver commands to the SDK.
+	DispatchCommand(northName string, cmd models.NorthCommand) (sdkModels.CommandResult, error)
 
 	// ========= 通道状态运维 =========
 	UpdateNorthOperatingState(name string, state models.OperatingState) error
+
+	// ========= 生命周期与基础信息 =========
+	// Run starts the north service. It should not be called directly; call
+	// startup.Bootstrap instead.
+	Run() error
+	// Name returns the name of this North Service
+	Name() string
+	// Version returns the version number of this North Service
+	Version() string
+	// LoggingClient returns the logger.LoggingClient
+	LoggingClient() logger.LoggingClient
 }

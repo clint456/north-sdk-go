@@ -40,3 +40,63 @@ type NorthInfo struct {
 	// AsyncEventChanBufferSize 异步上行事件通道的缓冲区长度
 	AsyncEventChanBufferSize int
 }
+
+// UpdateFromRaw converts configuration received from the Configuration Provider to a service-specific
+// configuration struct which is then used to overwrite the service's existing configuration struct.
+func (c *NorthServiceConfig) UpdateFromRaw(rawConfig interface{}) bool {
+	configuration, ok := rawConfig.(*NorthServiceConfig)
+	if ok {
+		*c = *configuration
+	}
+	return ok
+}
+
+// EmptyWritablePtr returns a pointer to a service-specific empty WritableInfo struct.
+func (c *NorthServiceConfig) EmptyWritablePtr() interface{} {
+	return &WritableInfo{}
+}
+
+// GetWritablePtr returns pointer to the writable section.
+func (c *NorthServiceConfig) GetWritablePtr() any {
+	return &c.Writable
+}
+
+// UpdateWritableFromRaw converts updated configuration received from the Configuration Provider to a
+// service-specific WritableInfo struct.
+func (c *NorthServiceConfig) UpdateWritableFromRaw(rawWritable interface{}) bool {
+	writable, ok := rawWritable.(*WritableInfo)
+	if ok {
+		c.Writable = *writable
+	}
+	return ok
+}
+
+// GetBootstrap returns the configuration elements required by the bootstrap.
+func (c *NorthServiceConfig) GetBootstrap() bootstrapConfig.BootstrapConfiguration {
+	return bootstrapConfig.BootstrapConfiguration{
+		Clients:    &c.Clients,
+		Service:    &c.Service,
+		Registry:   &c.Registry,
+		MessageBus: &c.MessageBus,
+	}
+}
+
+// GetLogLevel returns the current configuration's log level.
+func (c *NorthServiceConfig) GetLogLevel() string {
+	return c.Writable.LogLevel
+}
+
+// GetRegistryInfo gets the RegistryInfo field from the configuration.
+func (c *NorthServiceConfig) GetRegistryInfo() bootstrapConfig.RegistryInfo {
+	return c.Registry
+}
+
+// GetInsecureSecrets returns the service's InsecureSecrets.
+func (c *NorthServiceConfig) GetInsecureSecrets() bootstrapConfig.InsecureSecrets {
+	return c.Writable.InsecureSecrets
+}
+
+// GetTelemetryInfo returns the service's Telemetry settings.
+func (c *NorthServiceConfig) GetTelemetryInfo() *bootstrapConfig.TelemetryInfo {
+	return &c.Writable.Telemetry
+}

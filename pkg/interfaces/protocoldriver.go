@@ -6,15 +6,15 @@ type ProtocolDriver interface {
 	// Initialize 驱动全局一次性初始化
 	Initialize(sdk NorthServiceSDK) error
 	// Start 启动该通道实例
-	Start(northName string, cfg models.ProtocolProperties) error
+	Start(nodeName string, cfg models.ProtocolProperties) error
 	// Stop 停止该通道实例
-	Stop(northName string, force bool) error
-	// UpdateNorth 通道配置热更新
-	UpdateNorth(northName string, cfg models.ProtocolProperties) error
-	// RemoveNorth 销毁通道资源
-	RemoveNorth(northName string) error
-	// ValidateNorth 校验配置
-	ValidateNorth(cfg models.ProtocolProperties) error
+	Stop(nodeName string, force bool) error
+	// UpdateNode 通道配置热更新
+	UpdateNode(nodeName string, cfg models.ProtocolProperties) error
+	// RemoveNode 销毁通道资源
+	RemoveNode(nodeName string) error
+	// ValidateNode 校验配置
+	ValidateNode(cfg models.ProtocolProperties) error
 	// HandleSend SDK传入Event，驱动负责协议发送
-	HandleSend(northName string, event models.Event) error
+	HandleSend(nodeName string, event models.Event) error
 }

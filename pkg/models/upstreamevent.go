@@ -16,8 +16,8 @@ type UpstreamEvent struct {
 	Labels []string
 	// 事件发生时间戳，单位为毫秒
 	Timestamp int64
-	// 事件关联的北向资源列表
-	Resources []models.NorthResource
-	// 事件关联的北向命令列表
-	Commands []models.NorthCommand
+	// 事件关联的资源列表
+	Resources []models.Resource
+	// 事件关联的命令列表
+	Commands []models.Command
 }

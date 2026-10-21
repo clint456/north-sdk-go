@@ -8,23 +8,23 @@ import (
 // NorthServiceSDK defines the minimal interface for Northbound Service SDK
 // Core: manage north channel metadata, publish upstream event, handle platform down command
 type NorthServiceSDK interface {
-	// ========= North通道实例（对应南向Device） =========
-	AddNorth(north models.North) (string, error)
-	Norths() []models.North
-	GetNorthByName(name string) (models.North, error)
-	UpdateNorth(north models.North) error
-	RemoveNorthByName(name string) error
+	// ========= Node通道实例（对应南向Node） =========
+	AddNode(node models.Node) (string, error)
+	Nodes() []models.Node
+	GetNodeByName(name string) (models.Node, error)
+	UpdateNode(node models.Node) error
+	RemoveNodeByName(name string) error
 
-	// ========= NorthProfile北向点位元数据（对应南向DeviceProfile） =========
-	AddNorthProfile(profile models.NorthProfile) (string, error)
-	NorthProfiles() []models.NorthProfile
-	GetNorthProfileByName(name string) (models.NorthProfile, error)
-	UpdateNorthProfile(profile models.NorthProfile) error
-	RemoveNorthProfileByName(name string) error
+	// ========= Profile点位元数据（对应南向Profile） =========
+	AddProfile(profile models.Profile) (string, error)
+	Profiles() []models.Profile
+	GetProfileByName(name string) (models.Profile, error)
+	UpdateProfile(profile models.Profile) error
+	RemoveProfileByName(name string) error
 
 	// ========= 点位、命令查询缓存 =========
-	NorthResource(northName string, resourceName string) (models.NorthResource, bool)
-	NorthCommand(northName string, cmdName string) (models.NorthCommand, bool)
+	Resource(nodeName string, resourceName string) (models.Resource, bool)
+	Command(nodeName string, cmdName string) (models.Command, bool)
 
 	// ========= 核心：北向发布数据流（数据出） =========
 	// PublishEvent 基础事件上送，所有协议统一入口，复用EdgeX Event模型
@@ -33,9 +33,9 @@ type NorthServiceSDK interface {
 	AsyncEventsChannel() chan *sdkModels.UpstreamEvent
 
 	// ========= 核心：平台下行命令（指令入） =========
-	RegisterCommandHandler(northName string, handler func(cmd models.NorthCommand) (sdkModels.CommandResult, error)) error
-	UnregisterCommandHandler(northName string) error
+	RegisterCommandHandler(nodeName string, handler func(cmd models.Command) (sdkModels.CommandResult, error)) error
+	UnregisterCommandHandler(nodeName string) error
 
 	// ========= 通道状态运维 =========
-	UpdateNorthOperatingState(name string, state models.OperatingState) error
+	UpdateNodeOperatingState(name string, state models.OperatingState) error
 }
